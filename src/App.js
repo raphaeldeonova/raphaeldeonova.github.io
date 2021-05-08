@@ -12,32 +12,87 @@ function App(props) {
 
   const [addNomination, setAddNomination] = useState(() => (id, title, year) => console.log(id, title, year, "in app"));
   const [showUniqueIdModal, setShowUniqueIdModal] = useState(false);
+  const [showTooManyResultModal, setShowTooManyResultModal] = useState(false);
+  const [showMovieNotFoundModal, setShowMovieNotFoundModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState([]);
 
-  const handleClose = () => setShowUniqueIdModal(false);
-  const handleShow = () => setShowUniqueIdModal(true);
+  const handleUniqueIdClose = () => setShowUniqueIdModal(false);
+  const handleUniqueIdShow = () => setShowUniqueIdModal(true);
+  const handleTooManyResultClose = () => setShowTooManyResultModal(false);
+  const handleTooManyResultShow = () => setShowTooManyResultModal(true);
+  const handleMovieNotFoundClose = () => setShowMovieNotFoundModal(false);
+  const handleMovieNotFoundShow = () => setShowMovieNotFoundModal(true);
+
+  const getOMDbMovies = (title) => {
+    setIsLoading(true);
+    console.log("Getting movies with title: " + title);
+    fetch("http://www.omdbapi.com/?apikey=2c525deb&s=" + title)
+    .then(response => response.json())
+    .then(movies => {
+      if(movies["Response"] === "True"){
+        let newitems = [];
+        movies["Search"].forEach(({Title, Year, imdbID, Type, Poster}) => {
+          let newitem = {
+            id: imdbID,
+            title: Title,
+            year: Year
+          }
+          newitems.push(newitem);
+        })
+        console.log(newitems);
+        setData(newitems);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        setData([]);
+        if(movies["Error"] === "Too many results."){
+          handleTooManyResultShow();
+        } else {
+          handleMovieNotFoundShow();
+        }
+      }
+    });
+  }
 
   return (
     <div>
       <Container fluid="md">
         <Row>
           <Col>
-            <SearchBar></SearchBar>
+            <SearchBar getMovies={getOMDbMovies}></SearchBar>
           </Col>
         </Row>
         <Row>
           <Col sm={{span:4, order:"last"}}>
-            <Nominations showUniqueIdModal={handleShow} setAddNomination={setAddNomination}></Nominations>
+            <Nominations showUniqueIdModal={handleUniqueIdShow} setAddNomination={setAddNomination}></Nominations>
           </Col>
           <Col sm={8}>
-            <SearchResults addNomination={addNomination} isloading={false}></SearchResults>
+            <SearchResults results={data} addNomination={addNomination} isloading={isLoading}></SearchResults>
           </Col>
         </Row>
       </Container>
-      <Modal show={showUniqueIdModal} onHide={handleClose}>
+      <Modal show={showUniqueIdModal} onHide={handleUniqueIdClose}>
         <ModalBody>Its cheating to nominate the same movie!</ModalBody>
         <ModalFooter>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleUniqueIdClose}>
             I won't cheat
+          </Button>
+        </ModalFooter>
+      </Modal>
+      <Modal show={showTooManyResultModal} onHide={handleTooManyResultClose}>
+        <ModalBody>Too Many Result!</ModalBody>
+        <ModalFooter>
+          <Button variant="primary" onClick={handleTooManyResultClose}>
+            Got it
+          </Button>
+        </ModalFooter>
+      </Modal>
+      <Modal show={showMovieNotFoundModal} onHide={handleMovieNotFoundClose}>
+        <ModalBody>Cannot find movie</ModalBody>
+        <ModalFooter>
+          <Button variant="primary" onClick={handleMovieNotFoundClose}>
+            Got it
           </Button>
         </ModalFooter>
       </Modal>

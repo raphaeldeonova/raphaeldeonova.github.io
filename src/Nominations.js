@@ -5,35 +5,8 @@ import './Nominations.css'
 
 function Nominations(props){
 
-    const testdata = [
-        {
-            id: "tt2015381",
-            title: "Guardians Of The Galaxy",
-            year: 2014
-        },
-        {
-            id: "tt3896198",
-            title: "Guardians of the Galaxy Vol. 2",
-            year: 2019
-        },
-        {
-            id: "tt0371724",
-            title: "The Hitchhiker's Guide to the Galaxy",
-            year: 2005
-        },
-        {
-            id: "tt0177789",
-            title: "Galaxy Quest",
-            year: 1999
-        },
-        {
-            id: "tt0081874",
-            title: "Galaxy of Terror",
-            year: 1981
-        },
-    ]
-
-    const [nominations, updateNominations] = useState(testdata)
+    const [nominations, updateNominations] = useState([])
+    const [ids, updateIds] = useState(new Set());
     const handleOnDragEnd = (result) => {
         if(!result.destination) return;
         const items = Array.from(nominations);
@@ -43,26 +16,27 @@ function Nominations(props){
         updateNominations(items);
     }
 
-    const handleDeleteNomination = (index) => {
+    const handleDeleteNomination = (index, id) => {
         console.log(index);
         const items = Array.from(nominations);
         items.splice(index, 1);
         updateNominations(items);
+        updateIds((previds) => {
+            previds.remove(id);
+            return previds;
+        })
     }
 
     const handleAddNomination = (id, title, year) => {
-        let isUniqueId = true;
-        const addedId = id;
-        nominations.forEach(({id, title, year}) => {
-            console.log(id,title, year);
-            if(id === addedId){
-                isUniqueId = false;
-                props.showUniqueIdModal();
-            }
-        })
-        if(isUniqueId){
+        if(ids.has(id)){
+            props.showUniqueIdModal();
+        } else {
             const newitem = {id: id, title:title, year: year};
             updateNominations(prevnominations => [...prevnominations, newitem]);
+            updateIds((previds) => {
+                previds.add(id);
+                return previds;
+            })
         }
     }
 
@@ -70,11 +44,10 @@ function Nominations(props){
 
     useEffect(() => {
         if(!isUpdateAddNomination){
-            console.log("called setaddnomination")
             props.setAddNomination(() => handleAddNomination);
             setIsUpdateAddNomination(true);
         }
-    });
+    }, [nominations]);
 
     return(
         <Container className="nominations-container">
@@ -94,7 +67,7 @@ function Nominations(props){
                                                         <p>{title} ({year})</p>
                                                     </Col>
                                                     <Col xl={3}>
-                                                        <Button size="sm" variant="outline-danger" onClick={() => handleDeleteNomination(index)}> delete</Button>
+                                                        <Button size="sm" variant="outline-danger" onClick={() => handleDeleteNomination(index, id)}> delete</Button>
                                                     </Col>
                                                 </Row>
                                             </ListGroupItem>

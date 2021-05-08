@@ -15,36 +15,8 @@ import './SearchResults.css'
  */
 
 function SearchResults(props){
-    const [movies, setmovies] = useState([]);
     // movie is {title, releaseyear}
 
-    const testdata = [
-        {
-            id: "tt2015381",
-            title: "Guardians Of The Galaxy",
-            year: 2014
-        },
-        {
-            id: "tt3896198",
-            title: "Guardians of the Galaxy Vol. 2",
-            year: 2019
-        },
-        {
-            id: "tt0371724",
-            title: "The Hitchhiker's Guide to the Galaxy",
-            year: 2005
-        },
-        {
-            id: "tt0177789",
-            title: "Galaxy Quest",
-            year: 1999
-        },
-        {
-            id: "tt0081874",
-            title: "Galaxy of Terror",
-            year: 1981
-        },
-    ]
 
     if(props.isloading){
         return(
@@ -59,9 +31,9 @@ function SearchResults(props){
                 <h3>Results</h3>
                 
                 <ListGroup>
-                    {testdata.map(({id, title, year}, index) => {
+                    {props.results.map(({id, title, year}, index) => {
                         return(
-                            <ListGroupItem auto className="mt-2">
+                            <ListGroupItem auto key={id} className="mt-2">
                                 <Row>
                                     <Col auto>
                                         <p>{title} ({year})</p>
