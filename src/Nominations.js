@@ -1,4 +1,4 @@
-import {Container, Row, Col, Card, ListGroup, ListGroupItem, Button} from 'react-bootstrap'
+import {Container, Row, Col, ListGroup, ListGroupItem, Button} from 'react-bootstrap'
 import  React, {useState} from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import './Nominations.css'
@@ -43,6 +43,13 @@ function Nominations(){
         updateNominations(items);
     }
 
+    const handleDeleteNomination = (index) => {
+        console.log(index);
+        const items = Array.from(nominations);
+        items.splice(index, 1);
+        updateNominations(items);
+    }
+
     return(
         <Container className="nominations-container">
             <h3>Nominations</h3>
@@ -60,7 +67,7 @@ function Nominations(){
                                                         <p>{title} {year}</p>
                                                     </Col>
                                                     <Col xl={3}>
-                                                        <Button size="sm" variant="outline-danger"> delete</Button>
+                                                        <Button size="sm" variant="outline-danger" onClick={() => handleDeleteNomination(index)}> delete</Button>
                                                     </Col>
                                                 </Row>
                                             </ListGroupItem>
