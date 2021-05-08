@@ -10,6 +10,12 @@ function SearchBar(props){
         setInput(e.target.value);
     }
 
+    const handleKeyPress = (event) => {
+        if(event.key === "Enter"){
+            props.getMovies(input);
+        }
+    }
+
     return(
         <Container className="searchbar-container">
             <FormGroup >
@@ -21,7 +27,7 @@ function SearchBar(props){
                 <br></br>
                 <Row>
                     <Col sm={10}>
-                        <FormControl size="lg" type="text" placeholder='"The Black Panther"' onChange={handleChange}/>
+                        <FormControl size="lg" type="text" placeholder='"The Black Panther"' onChange={handleChange}  onKeyPress={handleKeyPress}/>
                     </Col>
                     <Col sm={2}>
                         <Button type="submit" size="lg" onClick={() => props.getMovies(input)}>Search</Button>

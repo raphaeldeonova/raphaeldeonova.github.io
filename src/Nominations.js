@@ -61,13 +61,13 @@ function Nominations(props){
                                 return(
                                     <Draggable key={id} draggableId={id} index = {index}>
                                         {(provided) => (
-                                            <ListGroupItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} auto className="mt-2">
+                                            <ListGroupItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} auto className="mt-2 nominations-listgroupitem">
                                                 <Row>
                                                     <Col auto>
                                                         <p>{title} ({year})</p>
                                                     </Col>
                                                     <Col xl={3}>
-                                                        <Button size="sm" variant="outline-danger" onClick={() => handleDeleteNomination(index, id)}> delete</Button>
+                                                        <Button size="sm" variant="outline-dark" onClick={() => handleDeleteNomination(index, id)}> delete</Button>
                                                     </Col>
                                                 </Row>
                                             </ListGroupItem>

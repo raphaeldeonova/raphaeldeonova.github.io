@@ -3,4 +3,5 @@
     background-color: rgb(224, 224, 224);
     padding: 20px;
     border-radius: 10px;
+    min-height: 120px;
 }
