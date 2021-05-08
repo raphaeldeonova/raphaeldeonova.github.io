@@ -58,6 +58,7 @@ function App(props) {
   return (
     <div>
       <Container fluid="md">
+        Made by: Raphael Deonova
         <Row>
           <Col>
             <SearchBar getMovies={getOMDbMovies}></SearchBar>
