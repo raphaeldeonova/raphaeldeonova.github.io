@@ -1,24 +1,28 @@
 import logo from './logo.svg';
 import './App.css';
+import SearchBar from './SearchBar'
+import SearchResults from './SearchResults'
+import Nominations from './Nominations'
+
+import {Container, Row, Col} from 'react-bootstrap'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          First change
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container fluid="md">
+      <Row>
+        <Col>
+          <SearchBar></SearchBar>
+        </Col>
+      </Row>
+      <Row>
+        <Col sm={8}>
+          <SearchResults isloading={false}></SearchResults>
+        </Col>
+        <Col sm={4}>
+          <Nominations></Nominations>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
