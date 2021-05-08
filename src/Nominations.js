@@ -1,9 +1,9 @@
-import {Container, Row, Col, ListGroup, ListGroupItem, Button} from 'react-bootstrap'
-import  React, {useState} from 'react'
+import {Container, Row, Col, ListGroup, ListGroupItem, Button, FormText} from 'react-bootstrap'
+import  React, {useEffect, useState} from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import './Nominations.css'
 
-function Nominations(){
+function Nominations(props){
 
     const testdata = [
         {
@@ -50,21 +50,48 @@ function Nominations(){
         updateNominations(items);
     }
 
+    const handleAddNomination = (id, title, year) => {
+        let isUniqueId = true;
+        const addedId = id;
+        nominations.forEach(({id, title, year}) => {
+            console.log(id,title, year);
+            if(id === addedId){
+                isUniqueId = false;
+                props.showUniqueIdModal();
+            }
+        })
+        if(isUniqueId){
+            const newitem = {id: id, title:title, year: year};
+            updateNominations(prevnominations => [...prevnominations, newitem]);
+        }
+    }
+
+    const [isUpdateAddNomination, setIsUpdateAddNomination] = useState(false);
+
+    useEffect(() => {
+        if(!isUpdateAddNomination){
+            console.log("called setaddnomination")
+            props.setAddNomination(() => handleAddNomination);
+            setIsUpdateAddNomination(true);
+        }
+    });
+
     return(
         <Container className="nominations-container">
             <h3>Nominations</h3>
+            <FormText muted>Sort your nominations by dragging the movies</FormText>
             <DragDropContext onDragEnd={handleOnDragEnd}>
                 <Droppable droppableId="nominations">
                     {(provided) => (
-                        <ListGroup {...provided.droppableProps} ref={provided.innerRef}>
+                        <ListGroup {...provided.droppableProps} ref={provided.innerRef} className="mt-3">
                             {nominations.map(({id, title, year}, index) => {
                                 return(
                                     <Draggable key={id} draggableId={id} index = {index}>
                                         {(provided) => (
-                                            <ListGroupItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} auto>
+                                            <ListGroupItem ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} auto className="mt-2">
                                                 <Row>
                                                     <Col auto>
-                                                        <p>{title} {year}</p>
+                                                        <p>{title} ({year})</p>
                                                     </Col>
                                                     <Col xl={3}>
                                                         <Button size="sm" variant="outline-danger" onClick={() => handleDeleteNomination(index)}> delete</Button>
