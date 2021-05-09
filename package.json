@@ -2,7 +2,7 @@
   "name": "shopify-front-end-challenge",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://raphaeldeonova.github.io/theshoppies",
+  "homepage": "http://raphaeldeonova.github.io",
   "dependencies": {
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
