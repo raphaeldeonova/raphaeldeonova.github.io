@@ -1,5 +1,5 @@
 import {Container, Row, Col, Button, ListGroupItem, ListGroup, Spinner} from 'react-bootstrap'
-import  React, {useState} from 'react'
+import  React, {useEffect, useState} from 'react'
 import './SearchResults.css'
 
 
@@ -15,14 +15,18 @@ import './SearchResults.css'
  */
 
 function SearchResults(props){
-    // movie is {title, releaseyear}
-
 
     if(props.isloading){
         return(
             <Container className="searchresults-container">
                 <h3>Results</h3>
                 <Spinner animation="border"></Spinner>
+            </Container>
+        )
+    } else if(props.isComplete){
+        return(
+            <Container className="searchresults-container">
+                <h3>Complete</h3>
             </Container>
         )
     } else {
@@ -39,7 +43,12 @@ function SearchResults(props){
                                         <p>{title} ({year})</p>
                                     </Col>
                                     <Col xl={3}>
-                                        <Button size="sm" variant="outline-success" onClick={() => props.addNomination(id, title, year)}> add</Button>
+                                        {!props.ids.has(id) && 
+                                            <Button size="sm" variant="outline-success" onClick={() => {
+                                                props.addNomination(id, title, year);
+                                                // update()
+                                            }}> nominate</Button>
+                                        }
                                     </Col>
                                 </Row>
                             </ListGroupItem>

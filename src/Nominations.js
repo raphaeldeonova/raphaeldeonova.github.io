@@ -5,49 +5,14 @@ import './Nominations.css'
 
 function Nominations(props){
 
-    const [nominations, updateNominations] = useState([])
-    const [ids, updateIds] = useState(new Set());
     const handleOnDragEnd = (result) => {
         if(!result.destination) return;
-        const items = Array.from(nominations);
+        const items = Array.from(props.nominations);
         const [reorderedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedItem);
 
-        updateNominations(items);
+        props.updateNominations(items);
     }
-
-    const handleDeleteNomination = (index, id) => {
-        console.log(index);
-        const items = Array.from(nominations);
-        items.splice(index, 1);
-        updateNominations(items);
-        updateIds((previds) => {
-            previds.delete(id);
-            return previds;
-        })
-    }
-
-    const handleAddNomination = (id, title, year) => {
-        if(ids.has(id)){
-            props.showUniqueIdModal();
-        } else {
-            const newitem = {id: id, title:title, year: year};
-            updateNominations(prevnominations => [...prevnominations, newitem]);
-            updateIds((previds) => {
-                previds.add(id);
-                return previds;
-            })
-        }
-    }
-
-    const [isUpdateAddNomination, setIsUpdateAddNomination] = useState(false);
-
-    useEffect(() => {
-        if(!isUpdateAddNomination){
-            props.setAddNomination(() => handleAddNomination);
-            setIsUpdateAddNomination(true);
-        }
-    }, [nominations]);
 
     return(
         <Container className="nominations-container">
@@ -57,7 +22,7 @@ function Nominations(props){
                 <Droppable droppableId="nominations">
                     {(provided) => (
                         <ListGroup {...provided.droppableProps} ref={provided.innerRef} className="mt-3">
-                            {nominations.map(({id, title, year}, index) => {
+                            {props.nominations.map(({id, title, year}, index) => {
                                 return(
                                     <Draggable key={id} draggableId={id} index = {index}>
                                         {(provided) => (
@@ -67,7 +32,7 @@ function Nominations(props){
                                                         <p>{title} ({year})</p>
                                                     </Col>
                                                     <Col xl={3}>
-                                                        <Button size="sm" variant="outline-dark" onClick={() => handleDeleteNomination(index, id)}> delete</Button>
+                                                        <Button size="sm" variant="outline-dark" onClick={() => props.handleDeleteNomination(index, id)}> remove</Button>
                                                     </Col>
                                                 </Row>
                                             </ListGroupItem>

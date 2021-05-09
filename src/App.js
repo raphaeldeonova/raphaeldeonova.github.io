@@ -4,25 +4,59 @@ import SearchBar from './SearchBar'
 import SearchResults from './SearchResults'
 import Nominations from './Nominations'
 
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 
 import {Container, Row, Col, Modal, ModalBody, ModalTitle, ModalFooter, Button} from 'react-bootstrap'
 
 function App(props) {
 
-  const [addNomination, setAddNomination] = useState(() => (id, title, year) => console.log(id, title, year, "in app"));
-  const [showUniqueIdModal, setShowUniqueIdModal] = useState(false);
   const [showTooManyResultModal, setShowTooManyResultModal] = useState(false);
   const [showMovieNotFoundModal, setShowMovieNotFoundModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [isComplete, setIsComplete] = useState(false);
+  const [results, setResults] = useState([]);
+  const [nominations, updateNominations] = useState([]);
+  const [nominationids, setnominationids] = useState(new Set());
 
-  const handleUniqueIdClose = () => setShowUniqueIdModal(false);
-  const handleUniqueIdShow = () => setShowUniqueIdModal(true);
   const handleTooManyResultClose = () => setShowTooManyResultModal(false);
   const handleTooManyResultShow = () => setShowTooManyResultModal(true);
   const handleMovieNotFoundClose = () => setShowMovieNotFoundModal(false);
   const handleMovieNotFoundShow = () => setShowMovieNotFoundModal(true);
+
+  const addId = (id) => {
+    setnominationids(previds => {
+      previds.add(id);
+      return previds;
+    })
+  }
+
+  const deleteId = (id) => {
+    setnominationids(previds => {
+      previds.delete(id);
+      return previds;
+    })
+  }
+
+  const addNomination = (id, title, year) => {
+    const newitem = {id: id, title:title, year: year};
+    updateNominations(prevnominations => [...prevnominations, newitem]);
+    addId(id);
+  }
+
+  const removeNomination = (index, id) => {
+    const items = Array.from(nominations);
+    items.splice(index, 1);
+    updateNominations(items);
+    deleteId(id);
+  }
+
+  useEffect(()=>{
+      if(nominations.length === 5){
+        setIsComplete(true);
+      } else {
+        setIsComplete(false);
+      }
+  }, [nominations])
 
   const getOMDbMovies = (title) => {
     setIsLoading(true);
@@ -41,11 +75,11 @@ function App(props) {
           newitems.push(newitem);
         })
         console.log(newitems);
-        setData(newitems);
+        setResults(newitems);
         setIsLoading(false);
       } else {
         setIsLoading(false);
-        setData([]);
+        setResults([]);
         if(movies["Error"] === "Too many results."){
           handleTooManyResultShow();
         } else {
@@ -66,21 +100,13 @@ function App(props) {
         </Row>
         <Row>
           <Col sm={{span:4, order:"last"}}>
-            <Nominations showUniqueIdModal={handleUniqueIdShow} setAddNomination={setAddNomination}></Nominations>
+            <Nominations ids={nominationids} nominations={nominations} updateNominations={updateNominations} handleDeleteNomination={removeNomination}></Nominations>
           </Col>
           <Col sm={8}>
-            <SearchResults results={data} addNomination={addNomination} isloading={isLoading}></SearchResults>
+            <SearchResults ids={nominationids} results={results} addNomination={addNomination} isloading={isLoading} isComplete={isComplete}></SearchResults>
           </Col>
         </Row>
       </Container>
-      <Modal show={showUniqueIdModal} onHide={handleUniqueIdClose}>
-        <ModalBody>Its cheating to nominate the same movie!</ModalBody>
-        <ModalFooter>
-          <Button variant="primary" onClick={handleUniqueIdClose}>
-            I won't cheat
-          </Button>
-        </ModalFooter>
-      </Modal>
       <Modal show={showTooManyResultModal} onHide={handleTooManyResultClose}>
         <ModalBody>Too Many Result!</ModalBody>
         <ModalFooter>

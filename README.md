@@ -8,3 +8,6 @@ Frameworks and libraries:
     - React DnD
 
 Made by: Raphael Deonova
+
+Live project:
+https://raphaeldeonova.github.io/
