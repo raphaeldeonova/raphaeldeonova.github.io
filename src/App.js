@@ -27,7 +27,7 @@ function App(props) {
   const getOMDbMovies = (title) => {
     setIsLoading(true);
     console.log("Getting movies with title: " + title);
-    fetch("http://www.omdbapi.com/?apikey=2c525deb&s=" + title)
+    fetch("https://www.omdbapi.com/?apikey=2c525deb&s=" + title)
     .then(response => response.json())
     .then(movies => {
       if(movies["Response"] === "True"){

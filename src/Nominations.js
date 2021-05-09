@@ -22,7 +22,7 @@ function Nominations(props){
         items.splice(index, 1);
         updateNominations(items);
         updateIds((previds) => {
-            previds.remove(id);
+            previds.delete(id);
             return previds;
         })
     }
