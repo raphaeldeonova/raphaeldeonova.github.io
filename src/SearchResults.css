@@ -1,7 +1,19 @@
 .searchresults-container{
     margin-top: 10px;
-    background-color: rgb(224, 224, 224);
+    background-color: #779BE7;
     padding: 20px;
     border-radius: 10px;
     min-height: 120px;
+}
+
+.searchresults-header{
+    color: white !important;
+}
+
+.searchresults-muted{
+    background-color: rgb(233, 233, 233) !important;
+}
+
+.searchresults-listitem{
+    padding:0 !important
 }

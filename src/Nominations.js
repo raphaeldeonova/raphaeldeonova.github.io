@@ -17,7 +17,7 @@ function Nominations(props){
     return(
         <Container className="nominations-container">
             <h3>Nominations</h3>
-            <FormText muted>Sort your nominations by dragging the movies</FormText>
+            <p muted>Sort your nominations by dragging the movies</p>
             <DragDropContext onDragEnd={handleOnDragEnd}>
                 <Droppable droppableId="nominations">
                     {(provided) => (
@@ -31,7 +31,7 @@ function Nominations(props){
                                                     <Col auto>
                                                         <p>{title} ({year})</p>
                                                     </Col>
-                                                    <Col xl={3}>
+                                                    <Col xl={4} >
                                                         <Button size="sm" variant="outline-dark" onClick={() => props.handleDeleteNomination(index, id)}> remove</Button>
                                                     </Col>
                                                 </Row>

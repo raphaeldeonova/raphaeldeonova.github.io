@@ -37,8 +37,8 @@ function App(props) {
     })
   }
 
-  const addNomination = (id, title, year) => {
-    const newitem = {id: id, title:title, year: year};
+  const addNomination = (id, title, year, poster) => {
+    const newitem = {id: id, title:title, year: year, poster:poster};
     updateNominations(prevnominations => [...prevnominations, newitem]);
     addId(id);
   }
@@ -70,7 +70,8 @@ function App(props) {
           let newitem = {
             id: imdbID,
             title: Title,
-            year: Year
+            year: Year,
+            poster: Poster
           }
           newitems.push(newitem);
         })
@@ -92,7 +93,7 @@ function App(props) {
   return (
     <div>
       <Container fluid="md">
-        Made by: Raphael Deonova
+        <p className="app-trademark">Made by: Raphael Deonova</p>
         <Row>
           <Col>
             <SearchBar getMovies={getOMDbMovies}></SearchBar>
@@ -103,7 +104,7 @@ function App(props) {
             <Nominations ids={nominationids} nominations={nominations} updateNominations={updateNominations} handleDeleteNomination={removeNomination}></Nominations>
           </Col>
           <Col sm={8}>
-            <SearchResults ids={nominationids} results={results} addNomination={addNomination} isloading={isLoading} isComplete={isComplete}></SearchResults>
+            <SearchResults ids={nominationids} nominations={nominations} results={results} addNomination={addNomination} isloading={isLoading} isComplete={isComplete}></SearchResults>
           </Col>
         </Row>
       </Container>

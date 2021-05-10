@@ -21,7 +21,12 @@ function SearchBar(props){
             <FormGroup >
                 <Row>
                     <Col>
-                        <h2>The Shoppies</h2>
+                        <h1>Find movies you love</h1>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <p>Nominate your best movies for the Shoppies Award!</p>
                     </Col>
                 </Row>
                 <br></br>
@@ -30,7 +35,7 @@ function SearchBar(props){
                         <FormControl size="lg" type="text" placeholder='"The Black Panther"' onChange={handleChange}  onKeyPress={handleKeyPress}/>
                     </Col>
                     <Col sm={2}>
-                        <Button type="submit" size="lg" onClick={() => props.getMovies(input)}>Search</Button>
+                        <Button className="searchbar-button" type="submit" size="lg" onClick={() => props.getMovies(input)}>Search</Button>
                     </Col>
                 </Row>
             </FormGroup>
