@@ -1,5 +1,5 @@
-import {Container, Row, Col, ListGroup, ListGroupItem, Button, FormText} from 'react-bootstrap'
-import  React, {useEffect, useState} from 'react'
+import {Container, Row, Col, ListGroup, ListGroupItem, Button} from 'react-bootstrap'
+import  React from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import './Nominations.css'
 

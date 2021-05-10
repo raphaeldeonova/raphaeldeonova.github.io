@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import SearchBar from './SearchBar'
 import SearchResults from './SearchResults'
@@ -6,7 +5,7 @@ import Nominations from './Nominations'
 
 import {useEffect, useState} from 'react'
 
-import {Container, Row, Col, Modal, ModalBody, ModalTitle, ModalFooter, Button} from 'react-bootstrap'
+import {Container, Row, Col, Modal, ModalBody, ModalFooter, Button} from 'react-bootstrap'
 
 function App(props) {
 

@@ -1,7 +1,7 @@
 import {
     Container, Row, Col, Button, ListGroupItem, 
-    ListGroup, Spinner, Card, CardImg, CardText} from 'react-bootstrap'
-import  React, {useEffect, useState} from 'react'
+    ListGroup, Spinner, Card} from 'react-bootstrap'
+import  React from 'react'
 import './SearchResults.css'
 import FigureImage from 'react-bootstrap/esm/FigureImage'
 import Nominations from './Nominations'
